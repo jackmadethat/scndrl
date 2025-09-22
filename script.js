@@ -12,22 +12,40 @@ let cardOne;
 let cardTwo;
 let cardThree;
 let cardFour;
+let health = 20;
 let roomNum = 0;
 let skipped = false;
+let hasWeapon = false;
 
 const showCombatPrompt = (show, num) => {
     switch(num) {
         case 1: 
             console.log(cardOne);
+            if (cardOne == undefined) {
+                console.log("Card 1 is undefined");
+                return
+            }
             break;
         case 2:
             console.log(cardTwo);
+            if (cardTwo == undefined) {
+                console.log("Card 2 is undefined");
+                return
+            }
             break;
         case 3: 
             console.log(cardThree);
+            if (cardThree == undefined) {
+                console.log("Card 3 is undefined");
+                return
+            }
             break;
         case 4:
             console.log(cardFour);
+            if (cardFour == undefined) {
+                console.log("Card 4 is undefined");
+                return
+            }
             break;
     }
     
@@ -47,6 +65,7 @@ const showRoomPrompt = () => {
     if (roomNum <= 1) {
         enterRoom();
         hideRoomPrompt();
+        renderDeckList();
     } else if (skipped) {
         roomPrompt2.style.display = "block";
     } else {
@@ -56,8 +75,13 @@ const showRoomPrompt = () => {
 
 const skipRoom = () => {
     skipped = true;
+    if (cardOne && cardTwo && cardThree && cardFour) {
+        const cards = [cardOne, cardTwo, cardThree, cardFour].sort(() => Math.random() - 0.5);
+        deck.cards.unshift(...cards);
+    }
     enterRoom();
     hideRoomPrompt();
+    renderDeckList();
 }
 
 const deck = {

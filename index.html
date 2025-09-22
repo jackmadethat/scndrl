@@ -33,6 +33,12 @@
             <div class="gridItem middle" id="cardThreeBtn"><button type="button" onClick="showCombatPrompt(true, 3)">Card 3</button></div>
             <div class="gridItem middle" id="cardFourBtn"><button type="button" onClick="showCombatPrompt(true, 4)">Card 4</button></div>
           </div>
+          <div id="slainMonster">
+            <p>Monster</p>
+          </div>
+          <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
+          <p>Health</p>
+          <p class="health">20</p>
           <div class="prompt" id="combatPrompt">
             <p>How do you want to fight this monster?</p>
             <button type="button" onClick="showCombatPrompt(false)">Use Weapon</button>
@@ -47,7 +53,6 @@
             <p>You need to clear this room!</p>
             <button type="button" onClick="hideRoomPrompt()">Confirm</button>
           </div>
-          <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
         </div>
         <div>
           <p id="devArea">Javascript not enabled</p>

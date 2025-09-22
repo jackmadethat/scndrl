@@ -63,12 +63,17 @@ h1 {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
 }
 
 .roomBtn {
     width: 150px;
     height: 40px;
+}
+
+.health {
+    font-size: 2.25em;
+    margin-top: -20px;
 }
 
 .prompt {
@@ -77,10 +82,23 @@ h1 {
     background-color: white;
     width: 230px;
     height: 100px;
-    margin-top: -300px;
+    margin-top: -450px;
     margin-bottom: 198px;
     margin-left: 50%;
-    translate: -115px;
+    translate: -125px;
+    padding: 10px;
+}
+
+#slainMonster {
+    display: none;
+    border: 1px red solid;
+    background-color: white;
+    width: 160px;
+    height: 100px;
+    margin-top: -120px;
+    margin-bottom: 15px;
+    margin-left: 50%;
+    translate: -81px;
 }
 
 #dungeon, #graveyard {
