@@ -19,9 +19,39 @@
         <button type="button" onClick="resetDeck()">Reset Deck</button>
         <button type="button" onClick="dealCard()">Deal Card</button>
         <div id="playArea">
-
+          <div class="parent">
+            <div class="gridItem bottom" style="grid-column: 3 / 5; border: none;"><div class="weaponDiv"><p>Weapon</p></div></div>
+            <div class="gridItem top" id="dungeon"><p>Dungeon</p></div>
+            <div class="gridItem top" id="cardOne"><p>Card 1</p></div>
+            <div class="gridItem top" id="cardTwo"><p>Card 2</p></div>
+            <div class="gridItem top" id="cardThree"><p>Card 3</p></div>
+            <div class="gridItem top" id="cardFour"><p>Card 4</p></div>
+            <div class="gridItem top" id="graveyard"><p>Graveyard</p></div>
+            <div class="gridItem middle" style="border: none;"></div>
+            <div class="gridItem middle" id="cardOneBtn"><button type="button" onClick="showCombatPrompt(true, 1)">Card 1</button></div>
+            <div class="gridItem middle" id="cardTwoBtn"><button type="button" onClick="showCombatPrompt(true, 2)">Card 2</button></div>
+            <div class="gridItem middle" id="cardThreeBtn"><button type="button" onClick="showCombatPrompt(true, 3)">Card 3</button></div>
+            <div class="gridItem middle" id="cardFourBtn"><button type="button" onClick="showCombatPrompt(true, 4)">Card 4</button></div>
+          </div>
+          <div class="prompt" id="combatPrompt">
+            <p>How do you want to fight this monster?</p>
+            <button type="button" onClick="showCombatPrompt(false)">Use Weapon</button>
+            <button type="button" onClick="showCombatPrompt(false)">Barehanded</button>
+          </div>
+          <div class="prompt" id="roomPrompt_1">
+            <p>Would you like to skip this room?</p>
+            <button type="button" onClick="skipRoom()">Yes</button>
+            <button type="button" onClick="hideRoomPrompt()">No</button>
+          </div>
+          <div class="prompt" id="roomPrompt_2">
+            <p>You need to clear this room!</p>
+            <button type="button" onClick="hideRoomPrompt()">Confirm</button>
+          </div>
+          <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
         </div>
-        <p id="devArea">Javascript not enabled</p>
+        <div>
+          <p id="devArea">Javascript not enabled</p>
+        </div>
       </div>
     </main>
   </body>
