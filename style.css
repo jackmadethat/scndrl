@@ -125,3 +125,9 @@ h1 {
 #rules {
     margin-top: 10px;
 }
+
+#rulesDiv {
+    display: none;
+    padding-left: 20%;
+    padding-right: 20%;
+}

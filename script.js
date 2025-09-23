@@ -17,6 +17,7 @@ const healthNum = document.getElementById("health");
 const weaponText = document.getElementById("weaponText");
 const slainMonster = document.getElementById("slainMonster");
 const gameOver = document.getElementById("gameOverPrompt");
+const rules = document.getElementById("rulesDiv");
 
 // --------------------------------------------
 // Gameplay Variables
@@ -27,13 +28,16 @@ let cardTwo;
 let cardThree;
 let cardFour;
 let tempMonster; // Store temp monster for combat
+let equippedWeapon;
+let weaponValue = 0;
+let slainMonsterValue = 20;
 let health = 20; // Can't exceed 20, game is over when this value hits 0
 let roomNum = 0; // Number of card evaluated in the room (max 4, needs to be 1 to proceed)
 let skipped = false; // Can't skip two rooms in a row
 let hasWeapon = false;
-let weaponValue = 0;
-let slainMonsterValue = 20;
+let hadPotion = false;
 let selectedCard = false; // Use to block button usage if a card is being evaluated or prompt is on screen
+let rulesShown = false;
 
 // --------------------------------------------
 // Deck Mechanics
@@ -111,6 +115,7 @@ const resetDeck = () => {
     hasWeapon = false;
     selectedCard = false;
     tempMonster = undefined;
+    equippedWeapon = undefined;
     cardOne = cardTwo = cardThree = cardFour = undefined;
     cardOneContainer.innerHTML = `<button type="button">Card 1</button>`;
     cardTwoContainer.innerHTML = `<button type="button">Card 2</button>`;
@@ -243,17 +248,27 @@ const evaluateCombat = (card, barehanded) => {
 
 const addHealth = (card) => {
     const value = parseInt(card.rank);
-    health += value;
-    if (health >= 20) {
-        health = 20;
+    if (!hadPotion) {
+        hadPotion = true;
+        health += value;
+        if (health >= 20) {
+            health = 20;
+        }
+        //console.log("Health added: " + value);
+        healthNum.innerText = health;
+        selectedCard = false;
+        discardCard(card);
+    } else {
+        selectedCard = false;
+        discardCard(card);
     }
-    //console.log("Health added: " + value);
-    healthNum.innerText = health;
-    selectedCard = false;
-    discardCard(card);
 }
 
 const setWeapon = (card) => {
+    if (hasWeapon) {
+        discardCard(equippedWeapon);
+    }
+    equippedWeapon = card;
     const value = parseInt(card.rank);
     weaponValue = value;
     weaponText.innerText = `Weapon: ${value}`;
@@ -302,6 +317,7 @@ const enterRoom = () => {
             cardFourContainer.innerHTML = `<button type="button" onClick="selectCard(4)">${cardFour.rank}<br />of<br />${cardFour.suit}</button>`;
         }
         roomNum = 4;
+        hadPotion = false;
         renderDeckList();
     }
 }
@@ -329,6 +345,16 @@ const showRoomPrompt = () => {
     } else if (roomNum != 1) {
         roomPrompt2.style.display = "block";
     }
+}
+
+const showRules = () => {
+    if (rulesShown) {
+        rules.style.display = "none";
+        rulesShown = false;
+    } else {
+        rules.style.display = "block";
+        rulesShown = true;
+    };
 }
 
 // --------------------------------------------
