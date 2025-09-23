@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Add a description to enhance SEO." /> 
+    <meta name="description" content="A single player rogue-like card game" /> 
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="stylesheet" type="text/css" href="style.css" />
@@ -15,32 +15,54 @@
     <main>
       <div id="content">
         <h1>Scoundrel</h1>
-        <button type="button" onClick="shuffleDeck()">Shuffle Deck</button>
-        <button type="button" onClick="resetDeck()">Reset Deck</button>
-        <button type="button" onClick="dealCard()">Deal Card</button>
+
         <div id="playArea">
+
           <div class="parent">
-            <div class="gridItem bottom" style="grid-column: 3 / 5; border: none;"><div class="weaponDiv"><p id="weaponText">Weapon</p></div></div>
-            <div class="gridItem top" id="dungeon"><p>Dungeon</p></div>
-            <div class="gridItem top" id="cardOne"><p>Card 1</p></div>
-            <div class="gridItem top" id="cardTwo"><p>Card 2</p></div>
-            <div class="gridItem top" id="cardThree"><p>Card 3</p></div>
-            <div class="gridItem top" id="cardFour"><p>Card 4</p></div>
-            <div class="gridItem top" id="graveyard"><p>Graveyard</p></div>
-            <div class="gridItem middle" style="border: none;"></div>
-            <div class="gridItem middle" id="cardOneBtn"><button type="button" onClick="selectCard(1)">Card 1</button></div>
-            <div class="gridItem middle" id="cardTwoBtn"><button type="button" onClick="selectCard(2)">Card 2</button></div>
-            <div class="gridItem middle" id="cardThreeBtn"><button type="button" onClick="selectCard(3)">Card 3</button></div>
-            <div class="gridItem middle" id="cardFourBtn"><button type="button" onClick="selectCard(4)">Card 4</button></div>
+            <div class="gridItem bottom" style="grid-column: 3 / 5; border: none;">
+              <div class="weaponDiv">
+                <p id="weaponText">Weapon</p>
+              </div>
+            </div>
+            <div class="gridItem top" id="dungeon">
+              <p>Dungeon</p>
+            </div>
+            <div class="gridItem top" id="cardOne">
+              <button type="button">Card 1</button>
+            </div>
+            <div class="gridItem top" id="cardTwo">
+              <button type="button">Card 2</button>
+            </div>
+            <div class="gridItem top" id="cardThree">
+              <button type="button">Card 3</button>
+            </div>
+            <div class="gridItem top" id="cardFour">
+              <button type="button">Card 4</button>
+            </div>
+            <div class="gridItem top" id="graveyard">
+              <p>Graveyard</p>
+            </div>
           </div>
+
           <div id="slainMonster">
             <p>Monster</p>
           </div>
+
           <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
+
           <div id="healthDiv">
             <p>Health</p>
             <p class="health" id="health">20</p>
           </div>
+
+          <div id="reset">
+            <button type="button" onClick="resetDeck()">Reset</button>
+          </div>
+
+          <div id="rules">
+            <a href="">Rules</a>
+          </div>
+
           <div class="prompt" id="combatPrompt">
             <p id="combatPromptText">How do you want to fight this monster?</p>
             <button type="button" onClick="evaluateCombat(tempMonster, false)">Use Weapon</button>

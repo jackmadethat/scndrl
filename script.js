@@ -118,7 +118,7 @@ const resetDeck = () => {
     cardFourContainer.innerHTML = `<p>Card 4</p>`;
     slainMonster.style.display = "none";
     slainMonster.innerHTML = `<p>Monster</p>`;
-    gameOver.style.display = "none";
+    healthNum.innerText = health;
     combatPromptText.innerText = "How do you want to fight this monster?";
 
     deck.createDeck();
@@ -126,6 +126,7 @@ const resetDeck = () => {
     deck.removeCards();
     deck.shuffle();
 
+    hideRoomPrompt();
     renderDeckList();
 }
 
@@ -150,22 +151,22 @@ const selectCard = (num) => {
         switch(num) {
             case 1: 
                 evaluateCard(cardOne);
-                cardOneContainer.innerHTML = `<p>Clear!</p>`;
+                cardOneContainer.innerHTML = `<button type="button">Clear!</button>`;
                 cardOne = undefined;
                 break;
             case 2:
                 evaluateCard(cardTwo);
-                cardTwoContainer.innerHTML = `<p>Clear!</p>`;
+                cardTwoContainer.innerHTML = `<button type="button">Clear!</button>`;
                 cardTwo = undefined;
                 break;
             case 3: 
                 evaluateCard(cardThree);
-                cardThreeContainer.innerHTML = `<p>Clear!</p>`;
+                cardThreeContainer.innerHTML = `<button type="button">Clear!</button>`;
                 cardThree = undefined;
                 break;
             case 4:
                 evaluateCard(cardFour);
-                cardFourContainer.innerHTML = `<p>Clear!</p>`;
+                cardFourContainer.innerHTML = `<button type="button">Clear!</button>`;
                 cardFour = undefined;
                 break;
         }
@@ -284,24 +285,26 @@ const checkHealth = () => {
 }
 
 const enterRoom = () => {
-    if (!cardOne) {
-        cardOne = deck.dealCard();
-        cardOneContainer.innerHTML = `<p>${cardOne.rank}<br />of<br />${cardOne.suit}</p>`;
+    if (!selectedCard) {
+        if (!cardOne) {
+            cardOne = deck.dealCard();
+            cardOneContainer.innerHTML = `<button type="button" onClick="selectCard(1)">${cardOne.rank}<br />of<br />${cardOne.suit}</button>`;
+        }
+        if (!cardTwo) {
+            cardTwo = deck.dealCard();
+            cardTwoContainer.innerHTML = `<button type="button" onClick="selectCard(2)">${cardTwo.rank}<br />of<br />${cardTwo.suit}</button>`;
+        }
+        if (!cardThree) {
+            cardThree = deck.dealCard();
+            cardThreeContainer.innerHTML = `<button type="button" onClick="selectCard(3)">${cardThree.rank}<br />of<br />${cardThree.suit}</button>`;
+        }
+        if (!cardFour) {
+            cardFour = deck.dealCard();
+            cardFourContainer.innerHTML = `<button type="button" onClick="selectCard(4)">${cardFour.rank}<br />of<br />${cardFour.suit}</button>`;
+        }
+        roomNum = 4;
+        renderDeckList();
     }
-    if (!cardTwo) {
-        cardTwo = deck.dealCard();
-        cardTwoContainer.innerHTML = `<p>${cardTwo.rank}<br />of<br />${cardTwo.suit}</p>`;
-    }
-    if (!cardThree) {
-        cardThree = deck.dealCard();
-        cardThreeContainer.innerHTML = `<p>${cardThree.rank}<br />of<br />${cardThree.suit}</p>`;
-    }
-    if (!cardFour) {
-        cardFour = deck.dealCard();
-        cardFourContainer.innerHTML = `<p>${cardFour.rank}<br />of<br />${cardFour.suit}</p>`;
-    }
-    roomNum = 4;
-    renderDeckList();
 }
 
 // --------------------------------------------
@@ -312,6 +315,7 @@ const hideRoomPrompt = () => {
     roomPrompt1.style.display = "none";
     roomPrompt2.style.display = "none";
     combatPrompt.style.display = "none";
+    gameOver.style.display = "none";
     combatPromptText.innerText = "How do you want to fight this monster?";
 }
 
