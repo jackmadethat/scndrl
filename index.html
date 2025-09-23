@@ -97,6 +97,26 @@
           <p>The 9 Diamonds are Weapons. Each weapon deals damage equal to its nominal value. All weapons are binding, which means if you pick one up you must equip it and discard your previous weapon.</p>
           <p>The 9 Hearts are Health Potions. You may only use one health potion per turn, even if there's more than one in the room. Every potion after the first is discarded.</p>
           <p>The game ends in one of two ways: Either you clear the dungeon, or your health reaches 0.</p>
+          <h2>Scoring</h2>
+          <p>If your life reaches 0, take all the remaining monsters in the Dungeon and subtract their values from your health. This (negative) number is your score.</p>
+          <p>If you complete the Dungeon, your score is your remaining health, or, if your health is 20 and your last card is a health postion, your health plus the potion's value for a maximum of 30.</p>
+          <h2>Gameplay</h2>
+          <p>Each turn you enter a new Room. This is done by drawing cards until you have four face-up cards in front of you. These four cards are your Room.</p>
+          <p>You may skip a Room (by clicking Enter Room a second time). If you do, take all four cards of the room and place them at the bottom of the Dungeon. You may skip as many rooms as you wish, but you may not skip two rooms in a row.</p>
+          <p>If you choose to play the room, you must face at least three of the four cards, taking them one at a time in any order you wish.</p>
+          <h3>If you choose a Weapon</h3>
+          <p>You must equip it. Do this by placing it face-up between you and the room. If you had a weapon equipped, move it and any monsters on it to the Graveyard.</p>
+          <h3>If you choose a Health Potion</h3>
+          <p>Add its number to your Health, then move it to the Graveyard. Your Health may not exceed 20 and you may not use more than one Health Potion per turn. If you take two Health Potions in one turn, the second is discarded and nothing more is added to your Health.</p>
+          <h3>If you choose a Monster</h3>
+          <p>You may fight it barehanded or with an equipped Weapon.</p>
+          <p>Once you have faced at least three cards, you may end your turn. If you choose to continue after facing three cards, the fourth card becomes part of the next Room.</p>
+          <h2>Combat</h2>
+          <h3>Barehanded</h3>
+          <p>If you choose to fight barehanded, subtract the Monster's full value from your Health and move the Monster to the Graveyard.</p>
+          <h3>With an Equipped Weapon</h3>
+          <p>If you choose to fight with your Weapon, place the Monster on top of your Weapon and any other Monsters on the Weapon. Damage is calculated by subtracting the Weapon's value from the Monster's value and subtracting the result from your Health. For example, if your Weapon is a 5 and the Monster is a 3, you take no damage because the Monster isn't more powerful than your Weapon. If your Weapon is a 5 and you face a Monster that's a 7, you take 2 damage.</p>
+          <p>Although you keep your Weapons until they're replaced, once a Weapon is used against a Monster, the Weapon can only be used to slay Monsters of a lower value than the previous Monster slain. For example, if your 5 Weapon is used against a 10 Monster, you may use it against a 6 Monster. If, however, you use your 5 Weapon against a 6 Monster, you may not use it to face a 10 Monster, but you can use it against any Monster weaker than 6.</p>
         </div>
       </div>
     </main>
