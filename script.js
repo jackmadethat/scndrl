@@ -1,5 +1,10 @@
+// --------------------------------------------
+// Environment Variables
+// --------------------------------------------
+
 const devText = document.getElementById("devArea");
 const combatPrompt = document.getElementById("combatPrompt");
+const combatPromptText = document.getElementById("combatPromptText");
 const roomPrompt1 = document.getElementById("roomPrompt_1");
 const roomPrompt2 = document.getElementById("roomPrompt_2");
 const dungeon = document.getElementById("dungeon");
@@ -8,81 +13,31 @@ const cardOneContainer = document.getElementById("cardOne");
 const cardTwoContainer = document.getElementById("cardTwo");
 const cardThreeContainer = document.getElementById("cardThree");
 const cardFourContainer = document.getElementById("cardFour");
+const healthNum = document.getElementById("health");
+const weaponText = document.getElementById("weaponText");
+const slainMonster = document.getElementById("slainMonster");
+const gameOver = document.getElementById("gameOverPrompt");
+
+// --------------------------------------------
+// Gameplay Variables
+// --------------------------------------------
+
 let cardOne;
 let cardTwo;
 let cardThree;
 let cardFour;
-let health = 20;
-let roomNum = 0;
-let skipped = false;
+let tempMonster; // Store temp monster for combat
+let health = 20; // Can't exceed 20, game is over when this value hits 0
+let roomNum = 0; // Number of card evaluated in the room (max 4, needs to be 1 to proceed)
+let skipped = false; // Can't skip two rooms in a row
 let hasWeapon = false;
+let weaponValue = 0;
+let slainMonsterValue = 20;
+let selectedCard = false; // Use to block button usage if a card is being evaluated or prompt is on screen
 
-const showCombatPrompt = (show, num) => {
-    switch(num) {
-        case 1: 
-            console.log(cardOne);
-            if (cardOne == undefined) {
-                console.log("Card 1 is undefined");
-                return
-            }
-            break;
-        case 2:
-            console.log(cardTwo);
-            if (cardTwo == undefined) {
-                console.log("Card 2 is undefined");
-                return
-            }
-            break;
-        case 3: 
-            console.log(cardThree);
-            if (cardThree == undefined) {
-                console.log("Card 3 is undefined");
-                return
-            }
-            break;
-        case 4:
-            console.log(cardFour);
-            if (cardFour == undefined) {
-                console.log("Card 4 is undefined");
-                return
-            }
-            break;
-    }
-    
-    if (show) {
-        combatPrompt.style.display = "block";
-    } else {
-        combatPrompt.style.display = "none";
-    }   
-}
-
-const hideRoomPrompt = () => {
-    roomPrompt1.style.display = "none";
-    roomPrompt2.style.display = "none";
-}
-
-const showRoomPrompt = () => {
-    if (roomNum <= 1) {
-        enterRoom();
-        hideRoomPrompt();
-        renderDeckList();
-    } else if (skipped) {
-        roomPrompt2.style.display = "block";
-    } else {
-        roomPrompt1.style.display = "block";
-    }
-}
-
-const skipRoom = () => {
-    skipped = true;
-    if (cardOne && cardTwo && cardThree && cardFour) {
-        const cards = [cardOne, cardTwo, cardThree, cardFour].sort(() => Math.random() - 0.5);
-        deck.cards.unshift(...cards);
-    }
-    enterRoom();
-    hideRoomPrompt();
-    renderDeckList();
-}
+// --------------------------------------------
+// Deck Mechanics
+// --------------------------------------------
 
 const deck = {
     suits: ['Hearts', 'Diamonds', 'Clubs', 'Spades'],
@@ -134,7 +89,6 @@ const deck = {
 
     dealCard() {
         const card = this.cards.pop();
-        //this.dealtCards.push(card);
         return card;
     },
 
@@ -143,37 +97,36 @@ const deck = {
     }
 };
 
-// Example usage:
-/*
-deck.createDeck();
-deck.addJokers();
-console.log('Initial deck:', deck.cards);
-
-deck.shuffle();
-console.log('Shuffled deck:', deck.cards);
-
-const card = deck.dealCard();
-console.log('Dealt card:', card);
-
-const hand = deck.dealHand(5);
-console.log('Dealt hand:', hand);
-*/
-
-// Implementation
 const shuffleDeck = () => {
     deck.shuffle();
     renderDeckList();
 }
 
 const resetDeck = () => {
-    deck.createDeck();
-    deck.addJokers();
-    deck.removeCards();
-    renderDeckList();
+    health = 20;
+    roomNum = 0;
+    weaponValue = 0;
+    slainMonsterValue = 20;
+    skipped = false;
+    hasWeapon = false;
+    selectedCard = false;
+    tempMonster = undefined;
+    cardOne = cardTwo = cardThree = cardFour = undefined;
     cardOneContainer.innerHTML = `<p>Card 1</p>`;
     cardTwoContainer.innerHTML = `<p>Card 2</p>`;
     cardThreeContainer.innerHTML = `<p>Card 3</p>`;
     cardFourContainer.innerHTML = `<p>Card 4</p>`;
+    slainMonster.style.display = "none";
+    slainMonster.innerHTML = `<p>Monster</p>`;
+    gameOver.style.display = "none";
+    combatPromptText.innerText = "How do you want to fight this monster?";
+
+    deck.createDeck();
+    deck.addJokers();
+    deck.removeCards();
+    deck.shuffle();
+
+    renderDeckList();
 }
 
 const dealCard = () => {
@@ -181,24 +134,211 @@ const dealCard = () => {
     renderDeckList();
 }
 
-const enterRoom = () => {
-    const cards = [deck.dealCard(), deck.dealCard(), deck.dealCard(), deck.dealCard()];
-    cardOne = cards[0];
-    cardTwo = cards[1];
-    cardThree = cards[2];
-    cardFour = cards[3];
-
-    document.getElementById("cardOne").innerHTML = `<p>${cardOne.rank}<br />of<br />${cardOne.suit}</p>`;
-    document.getElementById("cardTwo").innerHTML = `<p>${cardTwo.rank}<br />of<br />${cardTwo.suit}</p>`;
-    document.getElementById("cardThree").innerHTML = `<p>${cardThree.rank}<br />of<br />${cardThree.suit}</p>`;
-    document.getElementById("cardFour").innerHTML = `<p>${cardFour.rank}<br />of<br />${cardFour.suit}</p>`;
-
-    roomNum = 4;
-
+const discardCard = (card) => {
+    deck.dealtCards.push(card);
+    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: ${deck.dealtCards.length}</p>`
     renderDeckList();
 }
 
+// --------------------------------------------
+// Gameplay Mechanics
+// --------------------------------------------
+
+const selectCard = (num) => {
+    if (!selectedCard) {
+        selectedCard = true;
+        switch(num) {
+            case 1: 
+                evaluateCard(cardOne);
+                cardOneContainer.innerHTML = `<p>Clear!</p>`;
+                cardOne = undefined;
+                break;
+            case 2:
+                evaluateCard(cardTwo);
+                cardTwoContainer.innerHTML = `<p>Clear!</p>`;
+                cardTwo = undefined;
+                break;
+            case 3: 
+                evaluateCard(cardThree);
+                cardThreeContainer.innerHTML = `<p>Clear!</p>`;
+                cardThree = undefined;
+                break;
+            case 4:
+                evaluateCard(cardFour);
+                cardFourContainer.innerHTML = `<p>Clear!</p>`;
+                cardFour = undefined;
+                break;
+        }
+    }
+}
+
+const evaluateCard = (card) => {
+    if (card == undefined) {
+        //console.log("Card is undefined");
+        return
+    }
+    console.log("Card is: " + card.rank + " of " + card.suit);
+    switch (card.suit) {
+        case 'Hearts':
+            addHealth(card);
+            roomNum--;
+            break;
+        case 'Diamonds':
+            setWeapon(card);
+            roomNum--;
+            break;
+        case 'Clubs':
+            if (hasWeapon) {
+                tempMonster = card;
+                combatPrompt.style.display = "block";
+            } else {
+                evaluateCombat(card, true);
+            }
+            roomNum--;
+            break;
+        case 'Spades':
+            if (hasWeapon) {
+                tempMonster = card;
+                combatPrompt.style.display = "block";
+            } else {
+                evaluateCombat(card, true);
+            }
+            roomNum--;
+            break;
+        default:
+            // handle jokers or other special cases
+        break;
+    }
+}
+
+const evaluateCombat = (card, barehanded) => {
+    const valueMap = { Jack: 11, Queen: 12, King: 13, Ace: 14 };
+    const value = valueMap[card.rank] || parseInt(card.rank);
+    if (barehanded) {
+        //console.log("Damage received: " + value);
+        health -= value;
+        checkHealth();
+        healthNum.innerText = health;
+        hideRoomPrompt();
+    } else {
+        let newValue = weaponValue >= value ? 0 : value - weaponValue;
+        if (value >= slainMonsterValue) {
+            combatPromptText.innerText = "Your weapon is not strong enough!";
+            return
+        }
+        slainMonsterValue = value;
+        weaponText.innerText = `Weapon: ${weaponValue}`;
+        slainMonster.style.display = "block";
+        slainMonster.innerHTML = `<p>Monster: ${slainMonsterValue}</p>`;
+        health -= newValue;
+        healthNum.innerText = health;
+        //console.log("Damage received: " + newValue);
+        hideRoomPrompt();
+        checkHealth();
+    }
+    selectedCard = false;
+    tempMonster = undefined;
+    discardCard(card);
+}
+
+const addHealth = (card) => {
+    const value = parseInt(card.rank);
+    health += value;
+    if (health >= 20) {
+        health = 20;
+    }
+    //console.log("Health added: " + value);
+    healthNum.innerText = health;
+    selectedCard = false;
+    discardCard(card);
+}
+
+const setWeapon = (card) => {
+    const value = parseInt(card.rank);
+    weaponValue = value;
+    weaponText.innerText = `Weapon: ${value}`;
+    hasWeapon = true;
+    selectedCard = false;
+}
+
+const skipRoom = () => {
+    skipped = true;
+    if (cardOne && cardTwo && cardThree && cardFour) {
+        const cards = [cardOne, cardTwo, cardThree, cardFour].sort(() => Math.random() - 0.5);
+        deck.cards.unshift(...cards);
+    }
+    cardOne = undefined;
+    cardTwo = undefined;
+    cardThree = undefined;
+    cardFour = undefined;
+    enterRoom();
+    hideRoomPrompt();
+}
+
+const checkHealth = () => {
+    if (health <= 0) {
+        health = 0;
+        selectedCard = true;
+        gameOver.style.display = "block";
+    }
+}
+
+const enterRoom = () => {
+    if (!cardOne) {
+        cardOne = deck.dealCard();
+        cardOneContainer.innerHTML = `<p>${cardOne.rank}<br />of<br />${cardOne.suit}</p>`;
+    }
+    if (!cardTwo) {
+        cardTwo = deck.dealCard();
+        cardTwoContainer.innerHTML = `<p>${cardTwo.rank}<br />of<br />${cardTwo.suit}</p>`;
+    }
+    if (!cardThree) {
+        cardThree = deck.dealCard();
+        cardThreeContainer.innerHTML = `<p>${cardThree.rank}<br />of<br />${cardThree.suit}</p>`;
+    }
+    if (!cardFour) {
+        cardFour = deck.dealCard();
+        cardFourContainer.innerHTML = `<p>${cardFour.rank}<br />of<br />${cardFour.suit}</p>`;
+    }
+    roomNum = 4;
+    renderDeckList();
+}
+
+// --------------------------------------------
+// Prompts
+// --------------------------------------------
+
+const hideRoomPrompt = () => {
+    roomPrompt1.style.display = "none";
+    roomPrompt2.style.display = "none";
+    combatPrompt.style.display = "none";
+    combatPromptText.innerText = "How do you want to fight this monster?";
+}
+
+const showRoomPrompt = () => {
+    if (roomNum <= 1) {
+        enterRoom();
+        hideRoomPrompt();
+    } else if (skipped) {
+        roomPrompt2.style.display = "block";
+    } else if (roomNum == 4) {
+        roomPrompt1.style.display = "block";
+    } else if (roomNum != 1) {
+        roomPrompt2.style.display = "block";
+    }
+}
+
+// --------------------------------------------
+// Rendering
+// --------------------------------------------
+
 const renderDeckList = () => {
+    //renderDebug();
+    dungeon.innerHTML = `<p>Dungeon</p><p>Remaining: ${deck.cards.length}</p>`;
+    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: ${deck.dealtCards.length}</p>`;
+}
+
+const renderDebug = () => {
     const dealtCardsList = deck.dealtCards.map((card) => {
         const color = (card.suit === 'Hearts' || card.suit === 'Diamonds' || card.suit === 'Red Joker') ? 'red' : 'black';
         return `<li style="color: ${color}">${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
@@ -213,11 +353,13 @@ const renderDeckList = () => {
         <h2>Current Deck</h2>
         <ol>${deckList}</ol>
     `;
-    dungeon.innerHTML = `<p>Dungeon</p><p>Remaining: ${deck.cards.length}</p>`
-    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: ${deck.dealtCards.length}</p>`
 }
+
+// --------------------------------------------
+// Automatic Start
+// --------------------------------------------
 
 deck.createDeck();
 deck.addJokers();
 deck.removeCards();
-renderDeckList();
+shuffleDeck();
