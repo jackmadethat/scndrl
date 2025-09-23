@@ -112,10 +112,10 @@ const resetDeck = () => {
     selectedCard = false;
     tempMonster = undefined;
     cardOne = cardTwo = cardThree = cardFour = undefined;
-    cardOneContainer.innerHTML = `<p>Card 1</p>`;
-    cardTwoContainer.innerHTML = `<p>Card 2</p>`;
-    cardThreeContainer.innerHTML = `<p>Card 3</p>`;
-    cardFourContainer.innerHTML = `<p>Card 4</p>`;
+    cardOneContainer.innerHTML = `<button type="button">Card 1</button>`;
+    cardTwoContainer.innerHTML = `<button type="button">Card 2</button>`;
+    cardThreeContainer.innerHTML = `<button type="button">Card 3</button>`;
+    cardFourContainer.innerHTML = `<button type="button">Card 4</button>`;
     slainMonster.style.display = "none";
     slainMonster.innerHTML = `<p>Monster</p>`;
     healthNum.innerText = health;
@@ -218,7 +218,6 @@ const evaluateCombat = (card, barehanded) => {
     if (barehanded) {
         //console.log("Damage received: " + value);
         health -= value;
-        checkHealth();
         healthNum.innerText = health;
         hideRoomPrompt();
     } else {
@@ -235,11 +234,11 @@ const evaluateCombat = (card, barehanded) => {
         healthNum.innerText = health;
         //console.log("Damage received: " + newValue);
         hideRoomPrompt();
-        checkHealth();
     }
     selectedCard = false;
     tempMonster = undefined;
     discardCard(card);
+    checkHealth();
 }
 
 const addHealth = (card) => {
@@ -338,8 +337,8 @@ const showRoomPrompt = () => {
 
 const renderDeckList = () => {
     //renderDebug();
-    dungeon.innerHTML = `<p>Dungeon</p><p>Remaining: ${deck.cards.length}</p>`;
-    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: ${deck.dealtCards.length}</p>`;
+    dungeon.innerHTML = `<p>Dungeon</p><p>Remaining: <b>${deck.cards.length}</b></p>`;
+    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: <b>${deck.dealtCards.length}</b></p>`;
 }
 
 const renderDebug = () => {
