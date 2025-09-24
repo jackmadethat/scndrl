@@ -189,10 +189,9 @@ const selectCard = (num) => {
 
 const evaluateCard = (card) => {
     if (card == undefined) {
-        //console.log("Card is undefined");
         return
     }
-    console.log("Card is: " + card.rank + " of " + card.suit);
+
     switch (card.suit) {
         case 'Hearts':
             addHealth(card);
@@ -228,6 +227,7 @@ const evaluateCard = (card) => {
 
 const evaluateCombat = (card, barehanded) => {
     const value = valueMap[card.rank] || parseInt(card.rank);
+
     if (barehanded) {
         health -= value;
         healthNum.innerText = health;
@@ -245,6 +245,7 @@ const evaluateCombat = (card, barehanded) => {
         slainMonster.innerHTML = `<p>Monster: ${slainMonsterValue}</p>`;
         hideRoomPrompt();
     }
+
     selectedCard = false;
     tempMonster = undefined;
     discardCard(card);
@@ -253,13 +254,13 @@ const evaluateCombat = (card, barehanded) => {
 
 const addHealth = (card) => {
     const value = parseInt(card.rank);
+
     if (!hadPotion) {
         hadPotion = true;
         health += value;
         if (health >= 20) {
             health = 20;
         }
-        //console.log("Health added: " + value);
         healthNum.innerText = health;
         selectedCard = false;
         discardCard(card);
@@ -273,6 +274,7 @@ const setWeapon = (card) => {
     if (hasWeapon) {
         discardCard(equippedWeapon);
     }
+
     equippedWeapon = card;
     const value = parseInt(card.rank);
     weaponValue = value;
@@ -287,10 +289,12 @@ const setWeapon = (card) => {
 
 const skipRoom = () => {
     skipped = true;
+
     if (cardOne && cardTwo && cardThree && cardFour) {
         const cards = [cardOne, cardTwo, cardThree, cardFour].sort(() => Math.random() - 0.5);
         deck.cards.unshift(...cards);
     }
+
     cardOne = undefined;
     cardTwo = undefined;
     cardThree = undefined;
@@ -310,11 +314,13 @@ const enterRoom = () => {
     if (deck.cards.length <= 0) {
         endGame(true);
     }
+
     if (skipped) {
         enterRoomBtn.innerText = "Enter Room";
     } else {
         enterRoomBtn.innerText = "Skip Room";
     }
+
     const getSuitSymbol = (suit) => {
         switch (suit) {
             case 'Hearts':
@@ -329,6 +335,7 @@ const enterRoom = () => {
                 return '';
         }
     }
+
     if (!selectedCard) {
         if (!cardOne && deck.cards.length > 0) {
             cardOne = deck.dealCard();
@@ -355,6 +362,7 @@ const enterRoom = () => {
 const endGame = (win) => {
     selectedCard = true;
     let finalValue = 0;
+
     if (win) {
         const lastHeart = [...deck.dealtCards].reverse().find(card => card.suit === 'Hearts');
         const value = valueMap[lastHeart.rank] || parseInt(lastHeart.rank);
@@ -443,18 +451,21 @@ const renderDebug = () => {
                 return '';
         }
     }
+
     const dealtCardsList = deck.dealtCards.map((card) => {
         const color = (card.suit === 'Hearts' || card.suit === 'Diamonds' || card.suit === 'Red Joker') ? 'red' : 'black';
         return `<li style="color: ${color}">${getSuitSymbol(card.suit)} ${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
     }).join('');
+
     const deckList = deck.cards.map(card => {
         const color = (card.suit === 'Hearts' || card.suit === 'Diamonds' || card.suit === 'Red Joker') ? 'red' : 'black';
         return `<li style="color: ${color}">${getSuitSymbol(card.suit)} ${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
     }).join('');
+
     devText.innerHTML = `
-        <h2>Graveyard</h2>
+        <h3>Graveyard</h3>
         <ol>${dealtCardsList}</ol>
-        <h2>Dungeon</h2>
+        <h3>Dungeon</h3>
         <ol>${deckList}</ol>
     `;
 }
