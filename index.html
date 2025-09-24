@@ -13,111 +13,112 @@
   <body>
     <script type="text/javascript" src="./script.js" defer></script>
     <main>
-      <div id="content">
         <h1>Scoundrel</h1>
 
-        <div id="playArea">
-
-          <div class="parent">
-            <div class="gridItem bottom" style="grid-column: 3 / 5; border: none;">
-              <div class="weaponDiv">
-                <p id="weaponText">Weapon</p>
-              </div>
+        <div class="parent">
+          <div class="gridItem top" id="dungeon">
+            <p>Dungeon</p>
+          </div>
+          <div class="gridItem top" id="cardOne">
+            <button type="button">Card 1</button>
+          </div>
+          <div class="gridItem top" id="cardTwo">
+            <button type="button">Card 2</button>
+          </div>
+          <div class="gridItem top" id="cardThree">
+            <button type="button">Card 3</button>
+          </div>
+          <div class="gridItem top" id="cardFour">
+            <button type="button">Card 4</button>
+          </div>
+          <div class="gridItem top" id="graveyard">
+            <p>Graveyard</p>
+          </div>
+          <div class="gridItem bottom" style="border: none;">
+            <div class="weaponDiv">
+              <p id="weaponText">Weapon</p>
             </div>
-            <div class="gridItem top" id="dungeon">
-              <p>Dungeon</p>
-            </div>
-            <div class="gridItem top" id="cardOne">
-              <button type="button">Card 1</button>
-            </div>
-            <div class="gridItem top" id="cardTwo">
-              <button type="button">Card 2</button>
-            </div>
-            <div class="gridItem top" id="cardThree">
-              <button type="button">Card 3</button>
-            </div>
-            <div class="gridItem top" id="cardFour">
-              <button type="button">Card 4</button>
-            </div>
-            <div class="gridItem top" id="graveyard">
-              <p>Graveyard</p>
-            </div>
-          </div>
-
-          <div id="slainMonster">
-            <p>Monster</p>
-          </div>
-
-          <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
-
-          <div id="healthDiv">
-            <p>Health</p>
-            <p class="health" id="health">20</p>
-          </div>
-
-          <div id="reset">
-            <button type="button" onClick="resetDeck()">Reset</button>
-          </div>
-
-          <div id="rules">
-            <button type="button" onClick="showRules()">Rules</button>
-          </div>
-
-          <div class="prompt" id="combatPrompt">
-            <p id="combatPromptText">How do you want to fight this monster?</p>
-            <button type="button" onClick="evaluateCombat(tempMonster, false)">Use Weapon</button>
-            <button type="button" onClick="evaluateCombat(tempMonster, true)">Barehanded</button>
-          </div>
-          <div class="prompt" id="roomPrompt_1">
-            <p>Would you like to skip this room?</p>
-            <button type="button" onClick="skipRoom()">Yes</button>
-            <button type="button" onClick="hideRoomPrompt()">No</button>
-          </div>
-          <div class="prompt" id="roomPrompt_2">
-            <p>You need to clear this room!</p>
-            <button type="button" onClick="hideRoomPrompt()">Confirm</button>
-          </div>
-          <div class="prompt" id="gameOverPrompt">
-            <p>Game Over!</p>
-            <button type="button" onClick="resetDeck()">Reset</button>
           </div>
         </div>
-        <div>
-          <p id="devArea"></p>
+
+        <div id="slainMonster">
+          <p>Monster</p>
         </div>
-        <div id="rulesDiv">
-          <h2>Setup</h2>
-          <p>Scoundrel is played with a standard deck of cards without jokers, red face cards, and red aces. The deck is shuffled before play.</p>
-          <p>Place the deck to your left, this is the Dungeon.</p>
-          <p>To your right is the discard pile, the Graveyard.</p>
-          <p>Between the Dungeon and the Graveyard is the current Room.</p>
-          <p>Make a note of the number 20, this is your starting Health.</p>
-          <h2>Rules</h2>
-          <p>The 26 Clubs and Spades are Monsters. Their damage is equal to their nominal value with Jack being 11, Queen 12, King 13, and Ace 14.</p>
-          <p>The 9 Diamonds are Weapons. Each weapon deals damage equal to its nominal value. All weapons are binding, which means if you pick one up you must equip it and discard your previous weapon.</p>
-          <p>The 9 Hearts are Health Potions. You may only use one health potion per turn, even if there's more than one in the room. Every potion after the first is discarded.</p>
-          <p>The game ends in one of two ways: Either you clear the dungeon, or your health reaches 0.</p>
-          <h2>Scoring</h2>
-          <p>If your life reaches 0, take all the remaining monsters in the Dungeon and subtract their values from your health. This (negative) number is your score.</p>
-          <p>If you complete the Dungeon, your score is your remaining health, or, if your health is 20 and your last card is a health postion, your health plus the potion's value for a maximum of 30.</p>
-          <h2>Gameplay</h2>
-          <p>Each turn you enter a new Room. This is done by drawing cards until you have four face-up cards in front of you. These four cards are your Room.</p>
-          <p>You may skip a Room (by clicking Enter Room a second time). If you do, take all four cards of the room and place them at the bottom of the Dungeon. You may skip as many rooms as you wish, but you may not skip two rooms in a row.</p>
-          <p>If you choose to play the room, you must face at least three of the four cards, taking them one at a time in any order you wish.</p>
-          <h3>If you choose a Weapon</h3>
-          <p>You must equip it. Do this by placing it face-up between you and the room. If you had a weapon equipped, move it and any monsters on it to the Graveyard.</p>
-          <h3>If you choose a Health Potion</h3>
-          <p>Add its number to your Health, then move it to the Graveyard. Your Health may not exceed 20 and you may not use more than one Health Potion per turn. If you take two Health Potions in one turn, the second is discarded and nothing more is added to your Health.</p>
-          <h3>If you choose a Monster</h3>
-          <p>You may fight it barehanded or with an equipped Weapon.</p>
-          <p>Once you have faced at least three cards, you may end your turn. If you choose to continue after facing three cards, the fourth card becomes part of the next Room.</p>
-          <h2>Combat</h2>
-          <h3>Barehanded</h3>
-          <p>If you choose to fight barehanded, subtract the Monster's full value from your Health and move the Monster to the Graveyard.</p>
-          <h3>With an Equipped Weapon</h3>
-          <p>If you choose to fight with your Weapon, place the Monster on top of your Weapon and any other Monsters on the Weapon. Damage is calculated by subtracting the Weapon's value from the Monster's value and subtracting the result from your Health. For example, if your Weapon is a 5 and the Monster is a 3, you take no damage because the Monster isn't more powerful than your Weapon. If your Weapon is a 5 and you face a Monster that's a 7, you take 2 damage.</p>
-          <p>Although you keep your Weapons until they're replaced, once a Weapon is used against a Monster, the Weapon can only be used to slay Monsters of a lower value than the previous Monster slain. For example, if your 5 Weapon is used against a 10 Monster, you may use it against a 6 Monster. If, however, you use your 5 Weapon against a 6 Monster, you may not use it to face a 10 Monster, but you can use it against any Monster weaker than 6.</p>
+
+        <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
+
+        <div id="healthDiv" style="margin-bottom: -70px;">
+          <p>Health</p>
+          <p class="health" id="health">20</p>
         </div>
+
+        <div id="reset">
+          <button type="button" onClick="resetDeck()">Reset</button>
+        </div>
+        <div id="rules">
+          <button type="button" onClick="showRules()">Rules</button>
+        </div>
+        <div id="debug">
+          <button type="button" onClick="showDebug()">Debug</button>
+        </div>
+
+        <div class="prompt" id="combatPrompt">
+          <p id="combatPromptText">How do you want to fight this monster?</p>
+          <button type="button" onClick="evaluateCombat(tempMonster, false)">Use Weapon</button>
+          <button type="button" onClick="evaluateCombat(tempMonster, true)">Barehanded</button>
+        </div>
+        <div class="prompt" id="roomPrompt_1">
+          <p>Would you like to skip this room?</p>
+          <button type="button" onClick="skipRoom()">Yes</button>
+          <button type="button" onClick="hideRoomPrompt()">No</button>
+        </div>
+        <div class="prompt" id="roomPrompt_2">
+          <p>You need to clear this room!</p>
+          <button type="button" onClick="hideRoomPrompt()">Confirm</button>
+        </div>
+        <div class="prompt" id="gameOverPrompt">
+          <p>Game Over!</p>
+          <p id="score">Final Score: 0</p>
+          <button type="button" onClick="resetDeck()">Reset</button>
+        </div>
+      </div>
+
+      <div>
+        <p id="devArea"></p>
+      </div>
+
+      <div id="rulesDiv">
+        <h2>Setup</h2>
+        <p>Scoundrel is played with a standard deck of cards without jokers, red face cards, and red aces. The deck is shuffled before play.</p>
+        <p>Place the deck to your left, this is the Dungeon.</p>
+        <p>To your right is the discard pile, the Graveyard.</p>
+        <p>Between the Dungeon and the Graveyard is the current Room.</p>
+        <p>Make a note of the number 20, this is your starting Health.</p>
+        <h2>Rules</h2>
+        <p>The 26 Clubs and Spades are Monsters. Their damage is equal to their nominal value with Jack being 11, Queen 12, King 13, and Ace 14.</p>
+        <p>The 9 Diamonds are Weapons. Each weapon deals damage equal to its nominal value. All weapons are binding, which means if you pick one up you must equip it and discard your previous weapon.</p>
+        <p>The 9 Hearts are Health Potions. You may only use one health potion per turn, even if there's more than one in the room. Every potion after the first is discarded.</p>
+        <p>The game ends in one of two ways: Either you clear the dungeon, or your health reaches 0.</p>
+        <h2>Scoring</h2>
+        <p>If your life reaches 0, take all the remaining monsters in the Dungeon and subtract their values from your health. This (negative) number is your score.</p>
+        <p>If you complete the Dungeon, your score is your remaining health, or, if your health is 20 and your last card is a health postion, your health plus the potion's value for a maximum of 30.</p>
+        <h2>Gameplay</h2>
+        <p>Each turn you enter a new Room. This is done by drawing cards until you have four face-up cards in front of you. These four cards are your Room.</p>
+        <p>You may skip a Room (by clicking Enter Room a second time). If you do, take all four cards of the room and place them at the bottom of the Dungeon. You may skip as many rooms as you wish, but you may not skip two rooms in a row.</p>
+        <p>If you choose to play the room, you must face at least three of the four cards, taking them one at a time in any order you wish.</p>
+        <h3>If you choose a Weapon</h3>
+        <p>You must equip it. Do this by placing it face-up between you and the room. If you had a weapon equipped, move it and any monsters on it to the Graveyard.</p>
+        <h3>If you choose a Health Potion</h3>
+        <p>Add its number to your Health, then move it to the Graveyard. Your Health may not exceed 20 and you may not use more than one Health Potion per turn. If you take two Health Potions in one turn, the second is discarded and nothing more is added to your Health.</p>
+        <h3>If you choose a Monster</h3>
+        <p>You may fight it barehanded or with an equipped Weapon.</p>
+        <p>Once you have faced at least three cards, you may end your turn. If you choose to continue after facing three cards, the fourth card becomes part of the next Room.</p>
+        <h2>Combat</h2>
+        <h3>Barehanded</h3>
+        <p>If you choose to fight barehanded, subtract the Monster's full value from your Health and move the Monster to the Graveyard.</p>
+        <h3>With an Equipped Weapon</h3>
+        <p>If you choose to fight with your Weapon, place the Monster on top of your Weapon and any other Monsters on the Weapon. Damage is calculated by subtracting the Weapon's value from the Monster's value and subtracting the result from your Health. For example, if your Weapon is a 5 and the Monster is a 3, you take no damage because the Monster isn't more powerful than your Weapon. If your Weapon is a 5 and you face a Monster that's a 7, you take 2 damage.</p>
+        <p>Although you keep your Weapons until they're replaced, once a Weapon is used against a Monster, the Weapon can only be used to slay Monsters of a lower value than the previous Monster slain. For example, if your 5 Weapon is used against a 10 Monster, you may use it against a 6 Monster. If, however, you use your 5 Weapon against a 6 Monster, you may not use it to face a 10 Monster, but you can use it against any Monster weaker than 6.</p>
       </div>
     </main>
   </body>

@@ -17,7 +17,9 @@ const healthNum = document.getElementById("health");
 const weaponText = document.getElementById("weaponText");
 const slainMonster = document.getElementById("slainMonster");
 const gameOver = document.getElementById("gameOverPrompt");
+const scoreDiv = document.getElementById("score");
 const rules = document.getElementById("rulesDiv");
+const devArea = document.getElementById("devArea");
 
 // --------------------------------------------
 // Gameplay Variables
@@ -27,10 +29,10 @@ let cardOne;
 let cardTwo;
 let cardThree;
 let cardFour;
-let tempMonster; // Store temp monster for combat
+let tempMonster; // Store temp monster for combat prompt
 let equippedWeapon;
 let weaponValue = 0;
-let slainMonsterValue = 20;
+let slainMonsterValue = 20; // Set this value high so we defer to the weapon if no monster slain
 let health = 20; // Can't exceed 20, game is over when this value hits 0
 let roomNum = 0; // Number of card evaluated in the room (max 4, needs to be 1 to proceed)
 let skipped = false; // Can't skip two rooms in a row
@@ -38,6 +40,7 @@ let hasWeapon = false;
 let hadPotion = false;
 let selectedCard = false; // Use to block button usage if a card is being evaluated or prompt is on screen
 let rulesShown = false;
+let debugShown = false;
 
 // --------------------------------------------
 // Deck Mechanics
@@ -92,8 +95,10 @@ const deck = {
     },
 
     dealCard() {
-        const card = this.cards.pop();
-        return card;
+        if (this.cards.length === 0) {
+            return;
+        }
+        return this.cards.pop();
     },
 
     dealHand(handSize) {
@@ -103,6 +108,17 @@ const deck = {
 
 const shuffleDeck = () => {
     deck.shuffle();
+    renderDeckList();
+}
+
+const dealCard = () => {
+    deck.dealCard();
+    renderDeckList();
+}
+
+const discardCard = (card) => {
+    deck.dealtCards.push(card);
+    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: ${deck.dealtCards.length}</p>`
     renderDeckList();
 }
 
@@ -121,6 +137,7 @@ const resetDeck = () => {
     cardTwoContainer.innerHTML = `<button type="button">Card 2</button>`;
     cardThreeContainer.innerHTML = `<button type="button">Card 3</button>`;
     cardFourContainer.innerHTML = `<button type="button">Card 4</button>`;
+    weaponText.innerText = "Weapon";
     slainMonster.style.display = "none";
     slainMonster.innerHTML = `<p>Monster</p>`;
     healthNum.innerText = health;
@@ -132,17 +149,6 @@ const resetDeck = () => {
     deck.shuffle();
 
     hideRoomPrompt();
-    renderDeckList();
-}
-
-const dealCard = () => {
-    deck.dealCard();
-    renderDeckList();
-}
-
-const discardCard = (card) => {
-    deck.dealtCards.push(card);
-    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: ${deck.dealtCards.length}</p>`
     renderDeckList();
 }
 
@@ -221,23 +227,20 @@ const evaluateCombat = (card, barehanded) => {
     const valueMap = { Jack: 11, Queen: 12, King: 13, Ace: 14 };
     const value = valueMap[card.rank] || parseInt(card.rank);
     if (barehanded) {
-        //console.log("Damage received: " + value);
         health -= value;
         healthNum.innerText = health;
         hideRoomPrompt();
     } else {
-        let newValue = weaponValue >= value ? 0 : value - weaponValue;
-        if (value >= slainMonsterValue) {
+        if (value > slainMonsterValue) {
             combatPromptText.innerText = "Your weapon is not strong enough!";
-            return
+            return;
         }
+        let newValue = Math.max(0, value - weaponValue);
         slainMonsterValue = value;
-        weaponText.innerText = `Weapon: ${weaponValue}`;
-        slainMonster.style.display = "block";
-        slainMonster.innerHTML = `<p>Monster: ${slainMonsterValue}</p>`;
         health -= newValue;
         healthNum.innerText = health;
-        //console.log("Damage received: " + newValue);
+        slainMonster.style.display = "block";
+        slainMonster.innerHTML = `<p>Monster: ${slainMonsterValue}</p>`;
         hideRoomPrompt();
     }
     selectedCard = false;
@@ -272,6 +275,10 @@ const setWeapon = (card) => {
     const value = parseInt(card.rank);
     weaponValue = value;
     weaponText.innerText = `Weapon: ${value}`;
+    slainMonsterValue = 20;
+    weaponText.innerText = `Weapon: ${weaponValue}`;
+    slainMonster.style.display = "none";
+    slainMonster.innerHTML = `<p>Monster: ${slainMonsterValue}</p>`;
     hasWeapon = true;
     selectedCard = false;
 }
@@ -293,26 +300,28 @@ const skipRoom = () => {
 const checkHealth = () => {
     if (health <= 0) {
         health = 0;
-        selectedCard = true;
-        gameOver.style.display = "block";
+        endGame();
     }
 }
 
 const enterRoom = () => {
+    if (deck.cards.length <= 0) {
+        endGame();
+    }
     if (!selectedCard) {
-        if (!cardOne) {
+        if (!cardOne && deck.cards.length > 0) {
             cardOne = deck.dealCard();
             cardOneContainer.innerHTML = `<button type="button" onClick="selectCard(1)">${cardOne.rank}<br />of<br />${cardOne.suit}</button>`;
         }
-        if (!cardTwo) {
+        if (!cardTwo && deck.cards.length > 0) {
             cardTwo = deck.dealCard();
             cardTwoContainer.innerHTML = `<button type="button" onClick="selectCard(2)">${cardTwo.rank}<br />of<br />${cardTwo.suit}</button>`;
         }
-        if (!cardThree) {
+        if (!cardThree && deck.cards.length > 0) {
             cardThree = deck.dealCard();
             cardThreeContainer.innerHTML = `<button type="button" onClick="selectCard(3)">${cardThree.rank}<br />of<br />${cardThree.suit}</button>`;
         }
-        if (!cardFour) {
+        if (!cardFour && deck.cards.length > 0) {
             cardFour = deck.dealCard();
             cardFourContainer.innerHTML = `<button type="button" onClick="selectCard(4)">${cardFour.rank}<br />of<br />${cardFour.suit}</button>`;
         }
@@ -320,6 +329,11 @@ const enterRoom = () => {
         hadPotion = false;
         renderDeckList();
     }
+}
+
+const endGame = () => {
+    selectedCard = true;
+    gameOver.style.display = "block";
 }
 
 // --------------------------------------------
@@ -357,12 +371,22 @@ const showRules = () => {
     };
 }
 
+const showDebug = () => {
+    if (debugShown) {
+        devArea.style.display = "none";
+        debugShown = false;
+    } else {
+        devArea.style.display = "block";
+        debugShown = true;
+    };
+}
+
 // --------------------------------------------
 // Rendering
 // --------------------------------------------
 
 const renderDeckList = () => {
-    //renderDebug();
+    renderDebug();
     dungeon.innerHTML = `<p>Dungeon</p><p>Remaining: <b>${deck.cards.length}</b></p>`;
     graveyard.innerHTML = `<p>Graveyard</p><p>Cards: <b>${deck.dealtCards.length}</b></p>`;
 }
@@ -377,9 +401,9 @@ const renderDebug = () => {
         return `<li style="color: ${color}">${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
     }).join('');
     devText.innerHTML = `
-        <h2>Dealt Cards</h2>
+        <h2>Graveyard</h2>
         <ol>${dealtCardsList}</ol>
-        <h2>Current Deck</h2>
+        <h2>Dungeon</h2>
         <ol>${deckList}</ol>
     `;
 }
