@@ -2,7 +2,9 @@
 // Environment Variables
 // --------------------------------------------
 
+const devArea = document.getElementById("devArea");
 const devText = document.getElementById("devArea");
+const enterRoomBtn = document.getElementById("enterRoomBtn")
 const combatPrompt = document.getElementById("combatPrompt");
 const combatPromptText = document.getElementById("combatPromptText");
 const roomPrompt1 = document.getElementById("roomPrompt_1");
@@ -19,12 +21,12 @@ const slainMonster = document.getElementById("slainMonster");
 const gameOver = document.getElementById("gameOverPrompt");
 const scoreDiv = document.getElementById("score");
 const rules = document.getElementById("rulesDiv");
-const devArea = document.getElementById("devArea");
 
 // --------------------------------------------
 // Gameplay Variables
 // --------------------------------------------
 
+const valueMap = { Jack: 11, Queen: 12, King: 13, Ace: 14 }; // Set values for face cards
 let cardOne;
 let cardTwo;
 let cardThree;
@@ -137,6 +139,7 @@ const resetDeck = () => {
     cardTwoContainer.innerHTML = `<button type="button">Card 2</button>`;
     cardThreeContainer.innerHTML = `<button type="button">Card 3</button>`;
     cardFourContainer.innerHTML = `<button type="button">Card 4</button>`;
+    enterRoomBtn.innerText = "Enter Room";
     weaponText.innerText = "Weapon";
     slainMonster.style.display = "none";
     slainMonster.innerHTML = `<p>Monster</p>`;
@@ -224,7 +227,6 @@ const evaluateCard = (card) => {
 }
 
 const evaluateCombat = (card, barehanded) => {
-    const valueMap = { Jack: 11, Queen: 12, King: 13, Ace: 14 };
     const value = valueMap[card.rank] || parseInt(card.rank);
     if (barehanded) {
         health -= value;
@@ -300,13 +302,18 @@ const skipRoom = () => {
 const checkHealth = () => {
     if (health <= 0) {
         health = 0;
-        endGame();
+        endGame(false);
     }
 }
 
 const enterRoom = () => {
     if (deck.cards.length <= 0) {
-        endGame();
+        endGame(true);
+    }
+    if (skipped) {
+        enterRoomBtn.innerText = "Enter Room";
+    } else {
+        enterRoomBtn.innerText = "Skip Room";
     }
     if (!selectedCard) {
         if (!cardOne && deck.cards.length > 0) {
@@ -331,8 +338,24 @@ const enterRoom = () => {
     }
 }
 
-const endGame = () => {
+const endGame = (win) => {
     selectedCard = true;
+    let finalValue = 0;
+    if (win) {
+        const lastHeart = [...deck.dealtCards].reverse().find(card => card.suit === 'Hearts');
+        const value = valueMap[lastHeart.rank] || parseInt(lastHeart.rank);
+        finalValue = health + value;
+    } else {
+        finalValue = health - deck.cards.reduce((val, card) => {
+            if (card.suit === 'Spades' || card.suit === 'Clubs') {
+                const value = valueMap[card.rank] || parseInt(card.rank);
+                return val + value;
+            }
+            return val;
+        }, 0);
+    }
+
+    scoreDiv.innerHTML = `<b>Game Over!</b><br />Final Score: ${finalValue}</p>`
     gameOver.style.display = "block";
 }
 

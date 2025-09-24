@@ -45,7 +45,7 @@
           <p>Monster</p>
         </div>
 
-        <button type="button" class="roomBtn" onClick="showRoomPrompt()">Enter Room</button>
+        <button type="button" class="roomBtn" onClick="showRoomPrompt()" style="margin-top: 10px;" id="enterRoomBtn">Enter Room</button>
 
         <div id="healthDiv" style="margin-bottom: -70px;">
           <p>Health</p>
@@ -77,8 +77,7 @@
           <button type="button" onClick="hideRoomPrompt()">Confirm</button>
         </div>
         <div class="prompt" id="gameOverPrompt">
-          <p>Game Over!</p>
-          <p id="score">Final Score: 0</p>
+          <p id="score"><b>Game Over!</b><br />Final Score: 0</p>
           <button type="button" onClick="resetDeck()">Reset</button>
         </div>
       </div>
@@ -90,35 +89,39 @@
       <div id="rulesDiv">
         <h2>Setup</h2>
         <p>Scoundrel is played with a standard deck of cards without jokers, red face cards, and red aces. The deck is shuffled before play.</p>
-        <p>Place the deck to your left, this is the Dungeon.</p>
-        <p>To your right is the discard pile, the Graveyard.</p>
-        <p>Between the Dungeon and the Graveyard is the current Room.</p>
-        <p>Make a note of the number 20, this is your starting Health.</p>
+        <p>Place the deck to your left, this is the <b>Dungeon</b>.</p>
+        <p>To your right is the discard pile, the <b>Graveyard</b>.</p>
+        <p>Between the <b>Dungeon</b> and the <b>Graveyard</b> is the current <b>Room</b>.</p>
+        <p>Make a note of the number 20, this is your starting <b>Health</b>.</p>
+
         <h2>Rules</h2>
-        <p>The 26 Clubs and Spades are Monsters. Their damage is equal to their nominal value with Jack being 11, Queen 12, King 13, and Ace 14.</p>
-        <p>The 9 Diamonds are Weapons. Each weapon deals damage equal to its nominal value. All weapons are binding, which means if you pick one up you must equip it and discard your previous weapon.</p>
-        <p>The 9 Hearts are Health Potions. You may only use one health potion per turn, even if there's more than one in the room. Every potion after the first is discarded.</p>
-        <p>The game ends in one of two ways: Either you clear the dungeon, or your health reaches 0.</p>
+        <p>The 26 Clubs and Spades are <b>Monsters</b>. Their damage is equal to their <i>nominal value</i> with Jack being 11, Queen 12, King 13, and Ace 14.</p>
+        <p>The 9 Diamonds are <b>Weapons</b>. Each <b>Weapon</b> deals damage equal to its <i>nominal value</i>. All <b>Weapon</b>s are <i>binding</i>, which means if you pick one up you <i>must equip it</i> and discard your previous <b>Weapon</b>.</p>
+        <p>The 9 Hearts are <b>Health Potions</b>. You may only use <i>one</i> health potion per turn, even if there's more than one in the <b>Room</b>. Every potion after the first is discarded.</p>
+        <p>The game ends in one of two ways: Either you clear the <b>Dungeon</b>, or your <b>Health</b> reaches 0.</p>
+
         <h2>Scoring</h2>
-        <p>If your life reaches 0, take all the remaining monsters in the Dungeon and subtract their values from your health. This (negative) number is your score.</p>
-        <p>If you complete the Dungeon, your score is your remaining health, or, if your health is 20 and your last card is a health postion, your health plus the potion's value for a maximum of 30.</p>
+        <p>If your <b>Health</b> reaches 0, take all the remaining <b>Monster</b>s in the <b>Dungeon</b> and <i>subtract</i> their values from your <b>Health</b>. This (negative) number is your score.</p>
+        <p>If you complete the <b>Dungeon</b>, your score is your remaining <b>Health</b>, or, if your <b>Health</b> is 20 your health <i>plus</i> the value of the <i>last</i> potion in the dungeon for a maximum of 30.</p>
+
         <h2>Gameplay</h2>
-        <p>Each turn you enter a new Room. This is done by drawing cards until you have four face-up cards in front of you. These four cards are your Room.</p>
-        <p>You may skip a Room (by clicking Enter Room a second time). If you do, take all four cards of the room and place them at the bottom of the Dungeon. You may skip as many rooms as you wish, but you may not skip two rooms in a row.</p>
-        <p>If you choose to play the room, you must face at least three of the four cards, taking them one at a time in any order you wish.</p>
-        <h3>If you choose a Weapon</h3>
-        <p>You must equip it. Do this by placing it face-up between you and the room. If you had a weapon equipped, move it and any monsters on it to the Graveyard.</p>
-        <h3>If you choose a Health Potion</h3>
-        <p>Add its number to your Health, then move it to the Graveyard. Your Health may not exceed 20 and you may not use more than one Health Potion per turn. If you take two Health Potions in one turn, the second is discarded and nothing more is added to your Health.</p>
-        <h3>If you choose a Monster</h3>
-        <p>You may fight it barehanded or with an equipped Weapon.</p>
-        <p>Once you have faced at least three cards, you may end your turn. If you choose to continue after facing three cards, the fourth card becomes part of the next Room.</p>
+        <p>Each turn you enter a new <b>Room</b>. This is done by drawing cards until you have four face-up cards in front of you. These four cards are your <b>Room</b>.</p>
+        <p>You may skip a <b>Room</b>. If you do, take <i>all four</i> cards of the <b>Room</b> and place them at the bottom of the <b>Dungeon</b>. You may skip as many <b>Room</b>s as you want, but you <b>may not</b> skip two <b>Room</b>s in a row.</p>
+        <p>If you choose to play the <b>Room</b>, you must face at least <i>three</i> of the four cards, taking them one at a time in <i>any</i> order.</p>
+        <h3>If you choose a <i>Weapon</i><br />&#x2666;</h3>
+        <p>You <i>must</i> equip it. Do this by placing it face-up between you and the <b>Room</b>. If you had a <b>Weapon</b> equipped, move it and any <b>Monster</b>s on it to the <b>Graveyard</b>.</p>
+        <h3>If you choose a <i>Health Potion</i><br />&#x2665;</h3>
+        <p>Add its number to your <b>Health</b>, then move it to the <b>Graveyard</b>. Your <b>Health</b> <i>may not</i> exceed 20 and you <i>may not</i> use more than one Health Potion per turn. If you take two <b>Health Potion</b>s in one turn, the second is discarded and nothing more is added to your <b>Health</b>.</p>
+        <h3>If you choose a <i>Monster</i><br />&#x2660; &#x2663;</h3>
+        <p>You may fight it barehanded or with an equipped <b>Weapon</b>.</p>
+        <p>Once you have faced at least <i>three</i> cards, you may enter a new <b>Room</b>. If you choose to continue after facing three cards, the fourth card becomes part of the next <b>Room</b>, but you may face the fourth card if you wish.</p>
+
         <h2>Combat</h2>
         <h3>Barehanded</h3>
-        <p>If you choose to fight barehanded, subtract the Monster's full value from your Health and move the Monster to the Graveyard.</p>
+        <p>If you choose to fight barehanded, subtract the <b>Monster</b>'s full value from your <b>Health</b> and move the <b>Monster</b> to the <b>Graveyard</b>.</p>
         <h3>With an Equipped Weapon</h3>
-        <p>If you choose to fight with your Weapon, place the Monster on top of your Weapon and any other Monsters on the Weapon. Damage is calculated by subtracting the Weapon's value from the Monster's value and subtracting the result from your Health. For example, if your Weapon is a 5 and the Monster is a 3, you take no damage because the Monster isn't more powerful than your Weapon. If your Weapon is a 5 and you face a Monster that's a 7, you take 2 damage.</p>
-        <p>Although you keep your Weapons until they're replaced, once a Weapon is used against a Monster, the Weapon can only be used to slay Monsters of a lower value than the previous Monster slain. For example, if your 5 Weapon is used against a 10 Monster, you may use it against a 6 Monster. If, however, you use your 5 Weapon against a 6 Monster, you may not use it to face a 10 Monster, but you can use it against any Monster weaker than 6.</p>
+        <p>If you choose to fight with your <b>Weapon</b>, place the <b>Monster</b> on top of your <b>Weapon</b> and any other <b>Monster</b>s on the <b>Weapon</b>. Damage is calculated by subtracting the <b>Weapon</b>'s value from the <b>Monster</b>'s value and subtracting the result from your <b>Health</b>. For example, if your <b>Weapon</b> is a 5 and the <b>Monster</b> is a 3, you take <i>no damage</i> because the <b>Monster</b> <i>isn't more powerful</i> than your <b>Weapon</b>. If your <b>Weapon</b> is a 5 and you face a <b>Monster</b> that's a 7, you take 2 damage.</p>
+        <p>Although you keep your <b>Weapon</b>s until they're replaced, once a <b>Weapon</b> is used against a <b>Monster</b>, the <b>Weapon</b> can only be used to slay <b>Monster</b>s of a lower value than the previous <b>Monster</b> slain. For example, if your 5 <b>Weapon</b> is used against a 10 <b>Monster</b>, you may use it against a 6 <b>Monster</b>. If, however, you use your 5 <b>Weapon</b> against a 6 <b>Monster</b>, you <i>may not</i> use it to face a 10 <b>Monster</b>, but you can use it against any <b>Monster</b> weaker than 6.</p>
       </div>
     </main>
   </body>

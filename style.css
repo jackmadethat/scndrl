@@ -102,7 +102,7 @@ h1 {
     background-color: white;
     width: 160px;
     height: 100px;
-    margin-top: -120px;
+    margin-top: -185px;
 }
 
 #dungeon, #graveyard {
@@ -122,11 +122,15 @@ h1 {
 
 #rulesDiv {
     display: none;
-    padding-left: 20%;
-    padding-right: 20%;
+    padding-left: 30%;
+    padding-right: 30%;
 }
 
 @media (max-width: 1050px) {
+    #rulesDiv {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
     .prompt {
         margin-top: -150%;
     }
