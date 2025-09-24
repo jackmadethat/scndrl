@@ -315,22 +315,36 @@ const enterRoom = () => {
     } else {
         enterRoomBtn.innerText = "Skip Room";
     }
+    const getSuitSymbol = (suit) => {
+        switch (suit) {
+            case 'Hearts':
+                return '&#x2665;';
+            case 'Diamonds':
+                return '&#x2666;';
+            case 'Clubs':
+                return '&#x2663;';
+            case 'Spades':
+                return '&#x2660;';
+            default:
+                return '';
+        }
+    }
     if (!selectedCard) {
         if (!cardOne && deck.cards.length > 0) {
             cardOne = deck.dealCard();
-            cardOneContainer.innerHTML = `<button type="button" onClick="selectCard(1)">${cardOne.rank}<br />of<br />${cardOne.suit}</button>`;
+            cardOneContainer.innerHTML = `<button type="button" onClick="selectCard(1)"><span style="font-size: 2em;">${getSuitSymbol(cardOne.suit)}</span><br />${cardOne.rank}<br />of<br />${cardOne.suit}</button>`;
         }
         if (!cardTwo && deck.cards.length > 0) {
             cardTwo = deck.dealCard();
-            cardTwoContainer.innerHTML = `<button type="button" onClick="selectCard(2)">${cardTwo.rank}<br />of<br />${cardTwo.suit}</button>`;
+            cardTwoContainer.innerHTML = `<button type="button" onClick="selectCard(2)"><span style="font-size: 2em;">${getSuitSymbol(cardTwo.suit)}</span><br />${cardTwo.rank}<br />of<br />${cardTwo.suit}</button>`;
         }
         if (!cardThree && deck.cards.length > 0) {
             cardThree = deck.dealCard();
-            cardThreeContainer.innerHTML = `<button type="button" onClick="selectCard(3)">${cardThree.rank}<br />of<br />${cardThree.suit}</button>`;
+            cardThreeContainer.innerHTML = `<button type="button" onClick="selectCard(3)"><span style="font-size: 2em;">${getSuitSymbol(cardThree.suit)}</span><br />${cardThree.rank}<br />of<br />${cardThree.suit}</button>`;
         }
         if (!cardFour && deck.cards.length > 0) {
             cardFour = deck.dealCard();
-            cardFourContainer.innerHTML = `<button type="button" onClick="selectCard(4)">${cardFour.rank}<br />of<br />${cardFour.suit}</button>`;
+            cardFourContainer.innerHTML = `<button type="button" onClick="selectCard(4)"><span style="font-size: 2em;">${getSuitSymbol(cardFour.suit)}</span><br />${cardFour.rank}<br />of<br />${cardFour.suit}</button>`;
         }
         roomNum = 4;
         hadPotion = false;
@@ -415,13 +429,27 @@ const renderDeckList = () => {
 }
 
 const renderDebug = () => {
+    const getSuitSymbol = (suit) => {
+        switch (suit) {
+            case 'Hearts':
+                return '&#x2665;';
+            case 'Diamonds':
+                return '&#x2666;';
+            case 'Clubs':
+                return '&#x2663;';
+            case 'Spades':
+                return '&#x2660;';
+            default:
+                return '';
+        }
+    }
     const dealtCardsList = deck.dealtCards.map((card) => {
         const color = (card.suit === 'Hearts' || card.suit === 'Diamonds' || card.suit === 'Red Joker') ? 'red' : 'black';
-        return `<li style="color: ${color}">${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
+        return `<li style="color: ${color}">${getSuitSymbol(card.suit)} ${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
     }).join('');
     const deckList = deck.cards.map(card => {
         const color = (card.suit === 'Hearts' || card.suit === 'Diamonds' || card.suit === 'Red Joker') ? 'red' : 'black';
-        return `<li style="color: ${color}">${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
+        return `<li style="color: ${color}">${getSuitSymbol(card.suit)} ${card.rank}${card.suit !== 'Red Joker' && card.suit !== 'Black Joker' ? ' of ' + card.suit : ''}</li>`;
     }).join('');
     devText.innerHTML = `
         <h2>Graveyard</h2>
