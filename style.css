@@ -3,8 +3,13 @@
     src: url(./avqest.regular.ttf);
 }
 
+@font-face {
+    font-family: dumbledor;
+    src: url(./dum3.ttf);
+}
+
 main {
-    font-family: Arial;
+    font-family: dumbledor;
     display: grid;
     place-items: center;
     text-align: center;
@@ -12,8 +17,25 @@ main {
 
 h1 {
     font-family: avQuest;
-    font-size: 3.5em;
+    font-size: 4em;
     letter-spacing: -6px;
+}
+
+h2 {
+    font-size: 2.25em;
+}
+
+h3 {
+    font-size: 1.75em;
+}
+
+p {
+    font-size: 1.5em;
+}
+
+button {
+    font-family: dumbledor;
+    font-size: 1.3em;
 }
 
 #devArea {

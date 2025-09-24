@@ -410,8 +410,8 @@ const showDebug = () => {
 
 const renderDeckList = () => {
     renderDebug();
-    dungeon.innerHTML = `<p>Dungeon</p><p>Remaining: <b>${deck.cards.length}</b></p>`;
-    graveyard.innerHTML = `<p>Graveyard</p><p>Cards: <b>${deck.dealtCards.length}</b></p>`;
+    dungeon.innerHTML = `<p>Dungeon<br />Remaining: <b>${deck.cards.length}</b></p>`;
+    graveyard.innerHTML = `<p>Graveyard<br />Cards: <b>${deck.dealtCards.length}</b></p>`;
 }
 
 const renderDebug = () => {
