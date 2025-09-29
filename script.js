@@ -191,6 +191,10 @@ const evaluateCard = (card) => {
     if (card == undefined) {
         return
     }
+    
+    if (roomNum <= 2) {
+        enterRoomBtn.innerText = "Enter Room";
+    }
 
     switch (card.suit) {
         case 'Hearts':
